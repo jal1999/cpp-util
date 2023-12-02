@@ -7,10 +7,11 @@
 #include <array>
 #include <cstddef>
 #include <set>
+#include <string>
 #include "custom_concepts.h"
 
 /**
- * @brief Generates a std::vector that contains instances of std::pair that holds
+ * @brief Generates a <code>std::vector</code> that contains instances of <code>std::pair</code> that holds
  * both values in the given containers at each index.
  *
  * @tparam ContainerOne The type of the first container
@@ -19,7 +20,7 @@
  * @tparam U The type of element the second container holds
  * @param first The first container
  * @param second The second container
- * @return An std::vector of std::pair containing the values of each collection at
+ * @return An <code>std::vector</code> of <code>std::pair</code> containing the values of each collection at
  *         each index
  */
 template <typename ContainerOne, typename ContainerTwo, typename T, typename U>
@@ -37,13 +38,13 @@ std::vector<std::pair<T, U>> zip(ContainerOne first, ContainerTwo second)
 }
 
 /**
- * @brief Generates a std::vector containing instances of std::pair that hold
+ * @brief Generates a <code>std::vector</code> containing instances of <code>std::pair</code> that hold
  * the element and the element's index for each element in the container.
  *
  * @tparam Container The type of the container
  * @tparam T The type of elements that the container holds
  * @param c The container
- * @return An std::vector of the instances of std::pair
+ * @return An <code>std::vector</code> of the instances of <code>std::pair</code>
  */
 template <typename Container, typename T>
 requires is_container<Container>
@@ -58,12 +59,12 @@ std::vector<std::pair<int, T>> enumerate(Container c)
 }
 
 /**
- * @brief Splits a std::string based on the given delimeter into an std::vector
+ * @brief Splits a <code>std::string</code> based on the given delimeter into an <code>std::vector</code.
  * of std::string.
  *
  * @param s The string to split
  * @param delimeter The delimeter
- * @return An std::vector of strings that are separated from one another by delimeter
+ * @return An <code>std::vector</code> of strings that are separated from one another by delimeter
  */
 std::vector<std::string> split(const std::string& s, char delimeter = ' ')
 {
@@ -86,6 +87,14 @@ std::vector<std::string> split(const std::string& s, char delimeter = ' ')
     return splits;
 }
 
+/**
+ * @brief Creates an <code>std::vector</code> from the given container.
+ *
+ * @tparam Collection The type of the given collection
+ * @tparam T The type of elements the given collection contains
+ * @param c The collection
+ * @return An std::vector containing the elements of <code>c</code>
+ */
 template <typename Collection, typename T>
 requires is_container<Collection>
 std::vector<T> list_comprehension(Collection c)
@@ -97,6 +106,17 @@ std::vector<T> list_comprehension(Collection c)
     return vec;
 }
 
+/**
+ * @brief Creates an <code>std::vector</code> containing the elements of <code>c</code>
+ * that pass the given predicate <code>pred</code>.
+ *
+ * @tparam Collection The type of the given collection
+ * @tparam T The type of elements the given collection contains
+ * @tparam Pred The type of the given predicate
+ * @param c The collection
+ * @param pred The predicate
+ * @return An std::vector containing the elements of <code>c</code>
+ */
 template <typename Collection, typename T, typename Predicate>
 requires is_container<Collection> && std::predicate<Predicate, T>
 std::vector<T> list_comprehension(Collection c, Predicate pred)
@@ -110,6 +130,14 @@ std::vector<T> list_comprehension(Collection c, Predicate pred)
     return vec;
 }
 
+/**
+ * @brief Creates an <code>std::set</code> from the given container.
+ *
+ * @tparam Collection The type of the given collection
+ * @tparam T The type of elements the given collection contains
+ * @param c The collection
+ * @return An std::set containing the elements of <code>c</code>
+ */
 template <typename Collection, typename T>
 requires is_container<Collection>
 std::set<T> set_comprehension(Collection c)
@@ -121,6 +149,17 @@ std::set<T> set_comprehension(Collection c)
     return s;
 }
 
+/**
+ * @brief Creates an <code>std::set</code> containing the element of <code>c</code>
+ * that pass the predicate <code>pred</code>
+ *
+ * @tparam Collection The type of the given collection
+ * @tparam T The type of elements the given collection contains
+ * @tparam Predicate The type of the given predicate
+ * @param c The collection
+ * @param pred The predicate
+ * @return An std::set containing the elements of <code>c</code>
+ */
 template <typename Collection, typename T, typename Predicate>
 requires is_container<Collection> && std::predicate<Predicate, T>
 std::set<T> set_comprehension(Collection c, Predicate pred)
