@@ -19,7 +19,7 @@
  * @tparam U The type of element the second container holds
  * @param first The first container
  * @param second The second container
- * @return A vector of std::pair containing the values of each collection at
+ * @return An std::vector of std::pair containing the values of each collection at
  *         each index
  */
 template <typename ContainerOne, typename ContainerTwo, typename T, typename U>
@@ -32,6 +32,7 @@ std::vector<std::pair<T, U>> zip(ContainerOne first, ContainerTwo second)
    for (auto first_it = first.begin(), second_it = second.begin(); first_it != first.end()
         && second_it != second.end() && i < last_idx; ++first_it, ++second_it) {
        zips.push_back(std::make_pair(*first_it, *second_it));
+       ++i;
    }
 }
 
@@ -42,7 +43,7 @@ std::vector<std::pair<T, U>> zip(ContainerOne first, ContainerTwo second)
  * @tparam Container The type of the container
  * @tparam T The type of elements that the container holds
  * @param c The container
- * @return A std::vector of the instances of std::pair
+ * @return An std::vector of the instances of std::pair
  */
 template <typename Container, typename T>
 requires is_container<Container>
@@ -62,7 +63,7 @@ std::vector<std::pair<int, T>> enumerate(Container c)
  *
  * @param s The string to split
  * @param delimeter The delimeter
- * @return An array of strings that are separated from one another by delimeter
+ * @return An std::vector of strings that are separated from one another by delimeter
  */
 std::vector<std::string> split(const std::string& s, char delimeter = ' ')
 {
