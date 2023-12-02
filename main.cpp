@@ -2,10 +2,7 @@
 #include "include/util.h"
 
 int main() {
-    std::string s = "HixmyxnamexisxJamesxhixxxxxx";
-    auto x = set_comprehension<std::string, char>(s, [](char c){ return c != 'x'; });
-    for (auto xx : x) {
-        std::cout << xx << "\n";
-    }
+    std::vector<const char*> vec{"h","i"};
+    std::cout << join<std::vector<const char*>, const char*>(vec, "\n");
     return 0;
 }
