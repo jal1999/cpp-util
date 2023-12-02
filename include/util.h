@@ -67,26 +67,7 @@ std::vector<std::pair<int, T>> enumerate(Container c)
  * @param delimeter The delimeter
  * @return An <code>std::vector</code> of strings that are separated from one another by delimeter
  */
-std::vector<std::string> split(const std::string& s, char delimeter = ' ')
-{
-    /* TODO: make this work with delimeter as std::string */
-    std::vector<std::string> splits{};
-    std::string curr_str;
-    for (int i = 0; i < s.size(); ++i) {
-        if (s[i] == delimeter) {
-            if (!curr_str.empty()) {
-                splits.push_back(curr_str);
-            }
-            curr_str = "";
-            continue;
-        }
-        curr_str += s[i];
-        if (i == s.size() - 1 && !curr_str.empty()) {
-            splits.push_back(curr_str);
-        }
-    }
-    return splits;
-}
+std::vector<std::string> split(const std::string& s, char delimeter = ' ');
 
 /**
  * @brief Creates an <code>std::vector</code> from the given container.
