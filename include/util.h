@@ -8,6 +8,7 @@
 #include <cstddef>
 #include <set>
 #include <string>
+#include <stdexcept>
 #include "custom_concepts.h"
 
 /**
@@ -20,7 +21,7 @@
  * @tparam U The type of element the second container holds
  * @param first The first container
  * @param second The second container
- * @return An <code>std::vector</code> of <code>std::pair</code> containing the values of each collection at
+ * @return An <code>std::vector</code> of <code>std::pair</code> containing the values of each tion at
  *         each index
  */
 template <typename ContainerOne, typename ContainerTwo, typename T, typename U>
@@ -90,14 +91,14 @@ std::vector<std::string> split(const std::string& s, char delimeter = ' ')
 /**
  * @brief Creates an <code>std::vector</code> from the given container.
  *
- * @tparam Collection The type of the given collection
- * @tparam T The type of elements the given collection contains
- * @param c The collection
+ * @tparam Container The type of the given Container
+ * @tparam T The type of elements the given Container contains
+ * @param c The Container
  * @return An std::vector containing the elements of <code>c</code>
  */
-template <typename Collection, typename T>
-requires is_container<Collection>
-std::vector<T> list_comprehension(Collection c)
+template <typename Container, typename T>
+requires is_container<Container>
+std::vector<T> list_comprehension(Container c)
 {
     std::vector<T> vec{};
     for (T o : c) {
@@ -110,16 +111,16 @@ std::vector<T> list_comprehension(Collection c)
  * @brief Creates an <code>std::vector</code> containing the elements of <code>c</code>
  * that pass the given predicate <code>pred</code>.
  *
- * @tparam Collection The type of the given collection
- * @tparam T The type of elements the given collection contains
+ * @tparam Container The type of the given Container
+ * @tparam T The type of elements the given Container contains
  * @tparam Pred The type of the given predicate
- * @param c The collection
+ * @param c The Container
  * @param pred The predicate
  * @return An std::vector containing the elements of <code>c</code>
  */
-template <typename Collection, typename T, typename Predicate>
-requires is_container<Collection> && std::predicate<Predicate, T>
-std::vector<T> list_comprehension(Collection c, Predicate pred)
+template <typename Container, typename T, typename Predicate>
+requires is_container<Container> && std::predicate<Predicate, T>
+std::vector<T> list_comprehension(Container c, Predicate pred)
 {
     std::vector<T> vec{};
     for (T o : c) {
@@ -133,14 +134,14 @@ std::vector<T> list_comprehension(Collection c, Predicate pred)
 /**
  * @brief Creates an <code>std::set</code> from the given container.
  *
- * @tparam Collection The type of the given collection
- * @tparam T The type of elements the given collection contains
- * @param c The collection
+ * @tparam Container The type of the given Container
+ * @tparam T The type of elements the given Container contains
+ * @param c The Container
  * @return An std::set containing the elements of <code>c</code>
  */
-template <typename Collection, typename T>
-requires is_container<Collection>
-std::set<T> set_comprehension(Collection c)
+template <typename Container, typename T>
+requires is_container<Container>
+std::set<T> set_comprehension(Container c)
 {
     std::set<T> s;
     for (T o : c) {
@@ -153,16 +154,16 @@ std::set<T> set_comprehension(Collection c)
  * @brief Creates an <code>std::set</code> containing the element of <code>c</code>
  * that pass the predicate <code>pred</code>
  *
- * @tparam Collection The type of the given collection
- * @tparam T The type of elements the given collection contains
+ * @tparam Container The type of the given Container
+ * @tparam T The type of elements the given Container contains
  * @tparam Predicate The type of the given predicate
- * @param c The collection
+ * @param c The Container
  * @param pred The predicate
  * @return An std::set containing the elements of <code>c</code>
  */
-template <typename Collection, typename T, typename Predicate>
-requires is_container<Collection> && std::predicate<Predicate, T>
-std::set<T> set_comprehension(Collection c, Predicate pred)
+template <typename Container, typename T, typename Predicate>
+requires is_container<Container> && std::predicate<Predicate, T>
+std::set<T> set_comprehension(Container c, Predicate pred)
 {
     std::set<T> s;
     for (T o : c) {
@@ -171,6 +172,20 @@ std::set<T> set_comprehension(Collection c, Predicate pred)
         }
     }
     return s;
+}
+
+template <typename Container, typename T>
+requires is_container<Container> && std::convertible_to<T, std::string>
+std::string join(Container c, const std::string& delimeter = " ")
+{
+    std::string joined_str{};
+    for (auto [idx, chunk] : enumerate<Container, T>(c)) {
+        joined_str += static_cast<std::string>(chunk);
+        if (idx < c.size() - 1) {
+            joined_str += delimeter;
+        }
+    }
+    return joined_str;
 }
 
 #endif
