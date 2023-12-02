@@ -21,7 +21,7 @@
  * @tparam U The type of element the second container holds
  * @param first The first container
  * @param second The second container
- * @return An <code>std::vector</code> of <code>std::pair</code> containing the values of each tion at
+ * @return An <code>std::vector</code> of <code>std::pair</code> containing the values of each container at
  *         each index
  */
 template <typename ContainerOne, typename ContainerTwo, typename T, typename U>
@@ -174,6 +174,16 @@ std::set<T> set_comprehension(Container c, Predicate pred)
     return s;
 }
 
+/**
+ * @brief Converts the given collection into an <code>std::string</code> with its
+ * tokens separated by delimeter.
+ *
+ * @tparam Container The type of the given container
+ * @tparam T The type of the elements that <code>c</code> contains
+ * @param c The container
+ * @param delimeter The std::string to separate each element of <code>c</code> with
+ * @return
+ */
 template <typename Container, typename T>
 requires is_container<Container> && std::convertible_to<T, std::string>
 std::string join(Container c, const std::string& delimeter = " ")
