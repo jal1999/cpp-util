@@ -11,7 +11,7 @@ namespace util {
 
         template <typename ReturnType, typename Callable, typename... Args>
         requires std::invocable<Callable, Args...>
-        std::future<ReturnType> submit(Callable task, Args... args)
+        static std::future<ReturnType> submit(Callable task, Args... args)
         {
             return std::async(task, args...);
         }
@@ -22,7 +22,6 @@ namespace util {
         {
             auto t = std::jthread{task, args...};
         }
-    private:
     };
 }
 

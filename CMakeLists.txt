@@ -20,6 +20,9 @@ find_package(Boost REQUIRED)
 
 add_executable(util main.cpp
         include/util.h
-        include/custom_concepts.h)
+        include/custom_concepts.h
+        src/util.cpp
+        main.cpp
+        include/executor.h)
 
 #target_link_libraries(util ${Boost_ACCUMULATORS_LIBRARY})
