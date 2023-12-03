@@ -11,6 +11,7 @@
 #include <stdexcept>
 #include "custom_concepts.h"
 
+namespace util {
 /**
  * @brief Generates a <code>std::vector</code> that contains instances of <code>std::pair</code> that holds
  * both values in the given containers at each index.
@@ -24,19 +25,19 @@
  * @return An <code>std::vector</code> of <code>std::pair</code> containing the values of each container at
  *         each index
  */
-template <typename ContainerOne, typename ContainerTwo, typename T, typename U>
-requires is_container<ContainerOne> && is_container<ContainerTwo>
-std::vector<std::pair<T, U>> zip(ContainerOne first, ContainerTwo second)
-{
-   std::vector<std::pair<T, U>> zips;
-   int last_idx = first.size() > second.size() ? first.size() : second.size();
-   int i =  0;
-   for (auto first_it = first.begin(), second_it = second.begin(); first_it != first.end()
-        && second_it != second.end() && i < last_idx; ++first_it, ++second_it) {
-       zips.push_back(std::make_pair(*first_it, *second_it));
-       ++i;
-   }
-}
+    template<typename ContainerOne, typename ContainerTwo, typename T, typename U>
+    requires is_container<ContainerOne> && is_container<ContainerTwo>
+    std::vector<std::pair<T, U>> zip(ContainerOne first, ContainerTwo second) {
+        std::vector<std::pair<T, U>> zips;
+        int last_idx = first.size() > second.size() ? first.size() : second.size();
+        int i = 0;
+        for (auto first_it = first.begin(), second_it = second.begin(); first_it != first.end()
+                                                                        && second_it != second.end() &&
+                                                                        i < last_idx; ++first_it, ++second_it) {
+            zips.push_back(std::make_pair(*first_it, *second_it));
+            ++i;
+        }
+    }
 
 /**
  * @brief Generates a <code>std::vector</code> containing instances of <code>std::pair</code> that hold
@@ -47,17 +48,16 @@ std::vector<std::pair<T, U>> zip(ContainerOne first, ContainerTwo second)
  * @param c The container
  * @return An <code>std::vector</code> of the instances of <code>std::pair</code>
  */
-template <typename Container, typename T>
-requires is_container<Container>
-std::vector<std::pair<int, T>> enumerate(Container c)
-{
-    int i = 0;
-    std::vector<std::pair<int, T>> enumerated;
-    for (auto it = c.begin(); it != c.end(); ++it) {
-        enumerated.push_back(std::make_pair(i++, *it));
+    template<typename Container, typename T>
+    requires is_container<Container>
+    std::vector<std::pair<int, T>> enumerate(Container c) {
+        int i = 0;
+        std::vector<std::pair<int, T>> enumerated;
+        for (T o: c) {
+            enumerated.push_back(std::make_pair(i++, o));
+        }
+        return enumerated;
     }
-    return enumerated;
-}
 
 /**
  * @brief Splits a <code>std::string</code> based on the given delimeter into an <code>std::vector</code.
@@ -67,7 +67,7 @@ std::vector<std::pair<int, T>> enumerate(Container c)
  * @param delimeter The delimeter
  * @return An <code>std::vector</code> of strings that are separated from one another by delimeter
  */
-std::vector<std::string> split(const std::string& s, char delimeter = ' ');
+    std::vector<std::string> split(const std::string &s, const std::string& delimeter = " ");
 
 /**
  * @brief Creates an <code>std::vector</code> from the given container.
@@ -77,16 +77,15 @@ std::vector<std::string> split(const std::string& s, char delimeter = ' ');
  * @param c The Container
  * @return An std::vector containing the elements of <code>c</code>
  */
-template <typename Container, typename T>
-requires is_container<Container>
-std::vector<T> list_comprehension(Container c)
-{
-    std::vector<T> vec{};
-    for (T o : c) {
-        vec.push_back(o);
+    template<typename Container, typename T>
+    requires is_container<Container>
+    std::vector<T> list_comprehension(Container c) {
+        std::vector<T> vec{};
+        for (T o: c) {
+            vec.push_back(o);
+        }
+        return vec;
     }
-    return vec;
-}
 
 /**
  * @brief Creates an <code>std::vector</code> containing the elements of <code>c</code>
@@ -99,18 +98,17 @@ std::vector<T> list_comprehension(Container c)
  * @param pred The predicate
  * @return An std::vector containing the elements of <code>c</code>
  */
-template <typename Container, typename T, typename Predicate>
-requires is_container<Container> && std::predicate<Predicate, T>
-std::vector<T> list_comprehension(Container c, Predicate pred)
-{
-    std::vector<T> vec{};
-    for (T o : c) {
-        if (pred(o)) {
-            vec.push_back(o);
+    template<typename Container, typename T, typename Predicate>
+    requires is_container<Container> && std::predicate<Predicate, T>
+    std::vector<T> list_comprehension(Container c, Predicate pred) {
+        std::vector<T> vec{};
+        for (T o: c) {
+            if (pred(o)) {
+                vec.push_back(o);
+            }
         }
+        return vec;
     }
-    return vec;
-}
 
 /**
  * @brief Creates an <code>std::set</code> from the given container.
@@ -120,16 +118,15 @@ std::vector<T> list_comprehension(Container c, Predicate pred)
  * @param c The Container
  * @return An std::set containing the elements of <code>c</code>
  */
-template <typename Container, typename T>
-requires is_container<Container>
-std::set<T> set_comprehension(Container c)
-{
-    std::set<T> s;
-    for (T o : c) {
-        s.insert(o);
+    template<typename Container, typename T>
+    requires is_container<Container>
+    std::set<T> set_comprehension(Container c) {
+        std::set<T> s;
+        for (T o: c) {
+            s.insert(o);
+        }
+        return s;
     }
-    return s;
-}
 
 /**
  * @brief Creates an <code>std::set</code> containing the element of <code>c</code>
@@ -142,18 +139,17 @@ std::set<T> set_comprehension(Container c)
  * @param pred The predicate
  * @return An std::set containing the elements of <code>c</code>
  */
-template <typename Container, typename T, typename Predicate>
-requires is_container<Container> && std::predicate<Predicate, T>
-std::set<T> set_comprehension(Container c, Predicate pred)
-{
-    std::set<T> s;
-    for (T o : c) {
-        if (pred(o)) {
-            s.insert(o);
+    template<typename Container, typename T, typename Predicate>
+    requires is_container<Container> && std::predicate<Predicate, T>
+    std::set<T> set_comprehension(Container c, Predicate pred) {
+        std::set<T> s;
+        for (T o: c) {
+            if (pred(o)) {
+                s.insert(o);
+            }
         }
+        return s;
     }
-    return s;
-}
 
 /**
  * @brief Converts the given collection into an <code>std::string</code> with its
@@ -165,18 +161,18 @@ std::set<T> set_comprehension(Container c, Predicate pred)
  * @param delimeter The std::string to separate each element of <code>c</code> with
  * @return
  */
-template <typename Container, typename T>
-requires is_container<Container> && std::convertible_to<T, std::string>
-std::string join(Container c, const std::string& delimeter = " ")
-{
-    std::string joined_str{};
-    for (auto [idx, chunk] : enumerate<Container, T>(c)) {
-        joined_str += static_cast<std::string>(chunk);
-        if (idx < c.size() - 1) {
-            joined_str += delimeter;
+    template<typename Container, typename T>
+    requires is_container<Container> && std::convertible_to<T, std::string>
+    std::string join(Container c, const std::string &delimeter = " ") {
+        std::string joined_str{};
+        for (auto [idx, chunk]: enumerate<Container, T>(c)) {
+            joined_str += static_cast<std::string>(chunk);
+            if (idx < c.size() - 1) {
+                joined_str += delimeter;
+            }
         }
+        return joined_str;
     }
-    return joined_str;
 }
 
 #endif
